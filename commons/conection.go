@@ -7,9 +7,14 @@ import (
 )
 
 func ConexionDB() (db *sql.DB) {
+	driver := "mysql"
+	user := "root"
+	contrasenia := "poiuasdoiweq123we1232130asd"
+	nombreDB := "personalInfoDb"
+	direccionIP := "172.17.0.2"
+	port := "3306"
 
-	db, err := sql.Open("mysql", "root:poiuasdoiweq123we1232130asd@tcp(172.17.0.2:3306)/personalInfoDb")
-
+	db, err := sql.Open(driver, user+":"+contrasenia+"@tcp("+direccionIP+":"+port+")/"+nombreDB)
 	if err != nil {
 		panic(err.Error())
 	}

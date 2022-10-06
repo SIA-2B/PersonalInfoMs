@@ -54,7 +54,7 @@ func GetPersonas(w http.ResponseWriter, r *http.Request) {
 	personas := []models.Persona{}
 
 	for consultarRegistros.Next() {
-		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int
+		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int64
 		var nombrePersona, apellidoPersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
 		var libretaMilitar, estadoPersona bool
 		err = consultarRegistros.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
@@ -122,7 +122,7 @@ func GetPersona(w http.ResponseWriter, r *http.Request) {
 	for consultarRegistro.Next() {
 
 		persona := models.Persona{}
-		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int
+		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int64
 		var nombrePersona, apellidoPersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
 		var libretaMilitar, estadoPersona bool
 

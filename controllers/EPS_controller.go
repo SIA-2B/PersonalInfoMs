@@ -18,6 +18,7 @@ func CreateEPS(w http.ResponseWriter, r *http.Request) {
 	var newEPS models.EPS
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		log.Println("Insert a Valid EPS")
 		fmt.Fprintf(w, "Insert a Valid EPS")
 	}
 	json.Unmarshal(reqBody, &newEPS)
@@ -33,6 +34,7 @@ func CreateEPS(w http.ResponseWriter, r *http.Request) {
 
 	_, err = insertarRegistro.Exec(newEPS.RazonSocial, newEPS.EstadoEPS)
 	if err != nil {
+		log.Println("Error al insertar la EPS en la DB")
 		panic(err.Error())
 	}
 
@@ -123,6 +125,7 @@ func DeleteEPS(w http.ResponseWriter, r *http.Request) {
 
 	EPSID, err := strconv.Atoi(vars["id"])
 	if err != nil {
+		json.NewEncoder(w).Encode(false)
 		panic(err.Error())
 	}
 
@@ -130,11 +133,13 @@ func DeleteEPS(w http.ResponseWriter, r *http.Request) {
 	db := commons.ConexionDB()
 	_, err = db.Query("DELETE FROM EPS WHERE idEPS = ?;", EPSID)
 	if err != nil {
+		json.NewEncoder(w).Encode(false)
 		panic(err.Error())
 	}
 
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Ciudad Eliminado")
+	//fmt.Fprintf(w, "Ciudad Eliminado")
+	json.NewEncoder(w).Encode(true)
 
 	defer db.Close()
 }
