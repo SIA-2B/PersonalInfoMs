@@ -11,7 +11,7 @@ func ConexionDB() (db *sql.DB) {
 	user := "root"
 	contrasenia := "poiuasdoiweq123we1232130asd"
 	nombreDB := "personalInfoDb"
-	direccionIP := "localhost"
+	direccionIP := "34.95.213.9"
 	port := "3306"
 
 	db, err := sql.Open(driver, user+":"+contrasenia+"@tcp("+direccionIP+":"+port+")/"+nombreDB)
