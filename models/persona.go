@@ -6,6 +6,7 @@ type Persona struct {
 	ApellidoPersona       string `json:"apellidoPersona"`
 	TipoDocumento         string `json:"tipoDocumento"`
 	NUIPPersona           int64  `json:"NUIPPersona"`
+	UsernamePersona       string `json:"usernamePersona"`
 	LugarNacimiento       int64  `json:"lugarNacimiento"`
 	LugarExpDocumento     int64  `json:"lugarExpDocumento"`
 	EstadoCivil           int64  `json:"estadoCivil"`
