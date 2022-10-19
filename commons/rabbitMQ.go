@@ -10,10 +10,12 @@ import (
 )
 
 func RabbitMQConsumer() {
-	conn, err := amqp.Dial("amqp://admin:local23@172.17.0.4:5672")
+
+	conn, err := amqp.Dial("amqp://ndcontrerasr:1234@172.17.0.5:5672")
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return
 	}
 
 	defer conn.Close()
@@ -21,7 +23,8 @@ func RabbitMQConsumer() {
 	ch, err := conn.Channel()
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return
 	}
 
 	defer ch.Close()
@@ -35,6 +38,11 @@ func RabbitMQConsumer() {
 		false,
 		nil)
 
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 	go func() {
 		for deliery := range chDelibery {
 
@@ -43,16 +51,15 @@ func RabbitMQConsumer() {
 		}
 	}()
 
-	/*
-		noStop := make(chan bool)
+	noStop := make(chan bool)
 
-		go func() {
-			for deliery := range chDelibery {
+	go func() {
+		for deliery := range chDelibery {
 
-				a := deliery.Body
-				fmt.Println("msg: " + string(a))
-			}
-		}()
+			a := deliery.Body
+			fmt.Println("msg: " + string(a))
+		}
+	}()
 
-		<-noStop*/
+	<-noStop
 }

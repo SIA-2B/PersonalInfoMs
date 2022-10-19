@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"log"
+	"personalInfoMs/commons"
 	"personalInfoMs/routes"
 
 	"github.com/gorilla/mux"
@@ -28,7 +29,11 @@ func rest() {
 
 func main() {
 
-	rest()
+	go func() {
+		for i := 0; i < 3; i++ {
+			commons.RabbitMQConsumer()
+		}
+	}()
 
-	//commons.RabbitMQConsumer()
+	rest()
 }
