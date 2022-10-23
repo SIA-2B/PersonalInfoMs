@@ -12,5 +12,5 @@ EXPOSE 3000
 
 CMD [ "/personalInfoMs" ]
 # docker build -t personal_info_ms .
-# docker run -it -d -p 3000:3000 -v $PWD:/app --name personalInfoMs personal_info_ms
+# docker run -it -p 3000:3000 -v $PWD:/app --name personalInfoMs personal_info_ms
 # docker start 

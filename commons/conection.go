@@ -11,8 +11,8 @@ func ConexionDB() (db *sql.DB) {
 	user := "root"
 	contrasenia := "poiuasdoiweq123we1232130asd"
 	nombreDB := "personalInfoDb"
-	//direccionIP := "172.17.0.2"		//PC Docker
-	direccionIP := "34.95.213.9" //googleSQLCLoud
+	direccionIP := "172.17.0.2" //MySQL in  Docker
+	//direccionIP := "34.95.213.9" //googleSQLCLoud
 	port := "3306"
 
 	db, err := sql.Open(driver, user+":"+contrasenia+"@tcp("+direccionIP+":"+port+")/"+nombreDB)

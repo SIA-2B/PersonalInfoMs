@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"log"
 	"personalInfoMs/commons"
@@ -30,8 +31,13 @@ func rest() {
 func main() {
 
 	go func() {
-		for i := 0; i < 3; i++ {
+
+		f := true
+		i := 1
+		for f {
+			log.Println("Estableciendo conexión con RabbitMQ... (Intento " + strconv.Itoa(i) + ")")
 			commons.RabbitMQConsumer()
+			i++
 		}
 	}()
 
