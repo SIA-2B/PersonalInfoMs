@@ -168,6 +168,138 @@ func GetPersona(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Persona no encontrada")
 }
 
+func GetPersonaByUsername(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json") //Le indicamos el tipo de contenido que tiene que procesar
+	vars := mux.Vars(r)                                //Extraemos los parametros de la Request
+
+	personaUsername := vars["username"]
+
+	//Consulta DB
+	db := commons.ConexionDB()
+	consultarRegistro, err := db.Query("SELECT * FROM Persona WHERE usernamePersona = ? ;", personaUsername)
+	if err != nil {
+		w.WriteHeader(http.StatusConflict)
+		log.Fatalf("Invalid Username %v", err)
+		fmt.Fprintf(w, "Invalid Username")
+		return
+	}
+
+	defer consultarRegistro.Close()
+
+	for consultarRegistro.Next() {
+
+		persona := models.Persona{}
+		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int64
+		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
+		var libretaMilitar, estadoPersona bool
+
+		err = consultarRegistro.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
+		if err != nil {
+			w.WriteHeader(http.StatusConflict)
+			fmt.Fprintf(w, "Error al convertir de SQL Row a Objeto GO")
+			return
+		}
+
+		persona.IDPersona = idPersona
+		persona.NombrePersona = nombrePersona
+		persona.ApellidoPersona = apellidoPersona
+		persona.TipoDocumento = tipoDocumento
+		persona.NUIPPersona = NUIPPersona
+		persona.UsernamePersona = usernamePersona
+		persona.LugarNacimiento = lugarNacimiento
+		persona.LugarExpDocumento = lugarExpDocumento
+		persona.EstadoCivil = estadoCivil
+		persona.SexoBio = sexoBio
+		persona.Etnia = etnia
+		persona.CorreoPersonal = correoPersonal
+		persona.TelefonoMovil = telefonoMovil
+		persona.TelefonoFijo = telefonoFijo
+		persona.FechaNacimiento = fechaNacimiento
+		persona.EPS = EPS
+		persona.GrupoSangre = grupoSangre
+		persona.NivelAcademico = nivelAcademico
+		persona.FactorRH = factorRH
+		persona.DirResidencia = dirResidencia
+		persona.LugarResidencia = lugarResidencia
+		persona.EstratoSocioeconomico = estratoSocioeconomico
+		persona.LibretaMilitar = libretaMilitar
+		persona.FechaRegistroSistema = fechaRegistroSistema
+		persona.EstadoPersona = estadoPersona
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(persona) //devolvemos por el w la Persona que el cliente desea ver
+		return
+	}
+	w.WriteHeader(http.StatusNotFound)
+	fmt.Fprintf(w, "Persona no encontrada")
+}
+
+func GetPersonaByNUIP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json") //Le indicamos el tipo de contenido que tiene que procesar
+	vars := mux.Vars(r)                                //Extraemos los parametros de la Request
+
+	personaNUIP := vars["nuip"]
+
+	//Consulta DB
+	db := commons.ConexionDB()
+	consultarRegistro, err := db.Query("SELECT * FROM Persona WHERE NUIPPersona = ? ;", personaNUIP)
+	if err != nil {
+		w.WriteHeader(http.StatusConflict)
+		log.Fatalf("Invalid NUIP %v", err)
+		fmt.Fprintf(w, "Invalid NUIP")
+		return
+	}
+
+	defer consultarRegistro.Close()
+
+	for consultarRegistro.Next() {
+
+		persona := models.Persona{}
+		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int64
+		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
+		var libretaMilitar, estadoPersona bool
+
+		err = consultarRegistro.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
+		if err != nil {
+			w.WriteHeader(http.StatusConflict)
+			fmt.Fprintf(w, "Error al convertir de SQL Row a Objeto GO")
+			return
+		}
+
+		persona.IDPersona = idPersona
+		persona.NombrePersona = nombrePersona
+		persona.ApellidoPersona = apellidoPersona
+		persona.TipoDocumento = tipoDocumento
+		persona.NUIPPersona = NUIPPersona
+		persona.UsernamePersona = usernamePersona
+		persona.LugarNacimiento = lugarNacimiento
+		persona.LugarExpDocumento = lugarExpDocumento
+		persona.EstadoCivil = estadoCivil
+		persona.SexoBio = sexoBio
+		persona.Etnia = etnia
+		persona.CorreoPersonal = correoPersonal
+		persona.TelefonoMovil = telefonoMovil
+		persona.TelefonoFijo = telefonoFijo
+		persona.FechaNacimiento = fechaNacimiento
+		persona.EPS = EPS
+		persona.GrupoSangre = grupoSangre
+		persona.NivelAcademico = nivelAcademico
+		persona.FactorRH = factorRH
+		persona.DirResidencia = dirResidencia
+		persona.LugarResidencia = lugarResidencia
+		persona.EstratoSocioeconomico = estratoSocioeconomico
+		persona.LibretaMilitar = libretaMilitar
+		persona.FechaRegistroSistema = fechaRegistroSistema
+		persona.EstadoPersona = estadoPersona
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(persona) //devolvemos por el w la Persona que el cliente desea ver
+		return
+	}
+	w.WriteHeader(http.StatusNotFound)
+	fmt.Fprintf(w, "Persona no encontrada")
+}
+
 func DeletePersona(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json") //Le indicamos el tipo de contenido que tiene que procesar
 	vars := mux.Vars(r)                                //Extraemos los parametros de la Request
