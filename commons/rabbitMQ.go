@@ -16,7 +16,7 @@ type personaInput struct {
 }
 
 func RabbitMQConsumer() {
-	ip := "172.21.0.1"
+	ip := "host.docker.internal"
 
 	conn, err := amqp.Dial("amqp://grupo-2b:123456789@" + ip + ":5672")
 
