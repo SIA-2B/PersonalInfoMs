@@ -26,13 +26,13 @@ func CreatePersona(w http.ResponseWriter, r *http.Request) {
 
 	//Consulta DB
 	db := commons.ConexionDB()
-	insertarRegistro, err := db.Prepare("INSERT INTO `Persona`(`nombrePersona`, `apellidoPersona`, `tipoDocumento`, `NUIPPersona`, `usernamePersona`, `lugarNacimiento_idCiudad`, `lugarExpDocumento_idCiudad`, `estadoCivil`, `sexoBio`, `Etnia_idEtnia`, `correoPersonal`, `telefonoMovil`, `telefonoFijo`, `fechaNacimiento`, `EPS_idEPS`, `grupoSangre`, `nivelAcademico`, `factorRH`, `direccionResidencia`, `lugarResidencia_idCiudad`, `estratoSocioeconomico`, `libretaMilitar`, `fechaRegistroSistema`, `estadoPersona`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+	insertarRegistro, err := db.Prepare("INSERT INTO `Persona`(`nombrePersona`, `apellidoPersona`, `tipoDocumento`, `NUIPPersona`, `usernamePersona`, `lugarNacimiento_idCiudad`, `lugarExpDocumento_idCiudad`, `estadoCivil`, `sexoBio`, `Etnia_idEtnia`, `correoPersonal`, `telefonoMovil`, `telefonoFijo`, `fechaNacimiento`, `rolUsuario`, `EPS_idEPS`, `grupoSangre`, `nivelAcademico`, `factorRH`, `direccionResidencia`, `lugarResidencia_idCiudad`, `estratoSocioeconomico`, `libretaMilitar`, `fechaRegistroSistema`, `estadoPersona`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
 	defer insertarRegistro.Close()
 
-	_, err = insertarRegistro.Exec(newPersona.NombrePersona, newPersona.ApellidoPersona, newPersona.TipoDocumento, newPersona.NUIPPersona, newPersona.UsernamePersona, newPersona.LugarNacimiento, newPersona.LugarExpDocumento, newPersona.EstadoCivil, newPersona.SexoBio, newPersona.Etnia, newPersona.CorreoPersonal, newPersona.TelefonoMovil, newPersona.TelefonoFijo, newPersona.FechaNacimiento, newPersona.EPS, newPersona.GrupoSangre, newPersona.NivelAcademico, newPersona.FactorRH, newPersona.DirResidencia, newPersona.LugarResidencia, newPersona.EstratoSocioeconomico, newPersona.LibretaMilitar, newPersona.FechaRegistroSistema, newPersona.EstadoPersona)
+	_, err = insertarRegistro.Exec(newPersona.NombrePersona, newPersona.ApellidoPersona, newPersona.TipoDocumento, newPersona.NUIPPersona, newPersona.UsernamePersona, newPersona.LugarNacimiento, newPersona.LugarExpDocumento, newPersona.EstadoCivil, newPersona.SexoBio, newPersona.Etnia, newPersona.CorreoPersonal, newPersona.TelefonoMovil, newPersona.TelefonoFijo, newPersona.FechaNacimiento, newPersona.RolUsuario, newPersona.EPS, newPersona.GrupoSangre, newPersona.NivelAcademico, newPersona.FactorRH, newPersona.DirResidencia, newPersona.LugarResidencia, newPersona.EstratoSocioeconomico, newPersona.LibretaMilitar, newPersona.FechaRegistroSistema, newPersona.EstadoPersona)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -55,9 +55,9 @@ func GetPersonas(w http.ResponseWriter, r *http.Request) {
 
 	for consultarRegistros.Next() {
 		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int64
-		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
+		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, rolUsuario, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
 		var libretaMilitar, estadoPersona bool
-		err = consultarRegistros.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
+		err = consultarRegistros.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &rolUsuario, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -76,6 +76,7 @@ func GetPersonas(w http.ResponseWriter, r *http.Request) {
 		persona.TelefonoMovil = telefonoMovil
 		persona.TelefonoFijo = telefonoFijo
 		persona.FechaNacimiento = fechaNacimiento
+		persona.RolUsuario = rolUsuario
 		persona.EPS = EPS
 		persona.GrupoSangre = grupoSangre
 		persona.NivelAcademico = nivelAcademico
@@ -124,10 +125,10 @@ func GetPersona(w http.ResponseWriter, r *http.Request) {
 
 		persona := models.Persona{}
 		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int64
-		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
+		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, rolUsuario, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
 		var libretaMilitar, estadoPersona bool
 
-		err = consultarRegistro.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
+		err = consultarRegistro.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &rolUsuario, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
 		if err != nil {
 			w.WriteHeader(http.StatusConflict)
 			fmt.Fprintf(w, "Error al convertir de SQL Row a Objeto GO")
@@ -149,6 +150,7 @@ func GetPersona(w http.ResponseWriter, r *http.Request) {
 		persona.TelefonoMovil = telefonoMovil
 		persona.TelefonoFijo = telefonoFijo
 		persona.FechaNacimiento = fechaNacimiento
+		persona.RolUsuario = rolUsuario
 		persona.EPS = EPS
 		persona.GrupoSangre = grupoSangre
 		persona.NivelAcademico = nivelAcademico
@@ -190,10 +192,10 @@ func GetPersonaByUsername(w http.ResponseWriter, r *http.Request) {
 
 		persona := models.Persona{}
 		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int64
-		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
+		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, rolUsuario, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
 		var libretaMilitar, estadoPersona bool
 
-		err = consultarRegistro.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
+		err = consultarRegistro.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &rolUsuario, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
 		if err != nil {
 			w.WriteHeader(http.StatusConflict)
 			fmt.Fprintf(w, "Error al convertir de SQL Row a Objeto GO")
@@ -215,6 +217,7 @@ func GetPersonaByUsername(w http.ResponseWriter, r *http.Request) {
 		persona.TelefonoMovil = telefonoMovil
 		persona.TelefonoFijo = telefonoFijo
 		persona.FechaNacimiento = fechaNacimiento
+		persona.RolUsuario = rolUsuario
 		persona.EPS = EPS
 		persona.GrupoSangre = grupoSangre
 		persona.NivelAcademico = nivelAcademico
@@ -256,10 +259,10 @@ func GetPersonaByNUIP(w http.ResponseWriter, r *http.Request) {
 
 		persona := models.Persona{}
 		var idPersona, NUIPPersona, lugarNacimiento, lugarExpDocumento, estadoCivil, etnia, telefonoMovil, telefonoFijo, EPS, lugarResidencia, estratoSocioeconomico int64
-		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
+		var nombrePersona, apellidoPersona, usernamePersona, tipoDocumento, sexoBio, correoPersonal, fechaNacimiento, rolUsuario, grupoSangre, nivelAcademico, factorRH, dirResidencia, fechaRegistroSistema string
 		var libretaMilitar, estadoPersona bool
 
-		err = consultarRegistro.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
+		err = consultarRegistro.Scan(&idPersona, &nombrePersona, &apellidoPersona, &tipoDocumento, &NUIPPersona, &usernamePersona, &lugarNacimiento, &lugarExpDocumento, &estadoCivil, &sexoBio, &etnia, &correoPersonal, &telefonoMovil, &telefonoFijo, &fechaNacimiento, &rolUsuario, &EPS, &grupoSangre, &nivelAcademico, &factorRH, &dirResidencia, &lugarResidencia, &estratoSocioeconomico, &libretaMilitar, &fechaRegistroSistema, &estadoPersona)
 		if err != nil {
 			w.WriteHeader(http.StatusConflict)
 			fmt.Fprintf(w, "Error al convertir de SQL Row a Objeto GO")
@@ -281,6 +284,7 @@ func GetPersonaByNUIP(w http.ResponseWriter, r *http.Request) {
 		persona.TelefonoMovil = telefonoMovil
 		persona.TelefonoFijo = telefonoFijo
 		persona.FechaNacimiento = fechaNacimiento
+		persona.RolUsuario = rolUsuario
 		persona.EPS = EPS
 		persona.GrupoSangre = grupoSangre
 		persona.NivelAcademico = nivelAcademico
@@ -345,13 +349,13 @@ func UpdatePersona(w http.ResponseWriter, r *http.Request) {
 
 	//Consulta DB
 	db := commons.ConexionDB()
-	actualizarRegistro, err := db.Prepare("UPDATE `Persona` SET `nombrePersona`=?,`apellidoPersona`=?,`tipoDocumento`=?,`NUIPPersona`=?, `usernamePersona`=?,`lugarNacimiento_idCiudad`=?,`lugarExpDocumento_idCiudad`=?,`estadoCivil`=?,`sexoBio`=?,`Etnia_idEtnia`=?,`correoPersonal`=?,`telefonoMovil`=?,`telefonoFijo`=?,`fechaNacimiento`=?,`EPS_idEPS`=?,`grupoSangre`=?,`nivelAcademico`=?,`factorRH`=?,`direccionResidencia`=?,`lugarResidencia_idCiudad`=?,`estratoSocioeconomico`=?,`libretaMilitar`=?,`fechaRegistroSistema`=?,`estadoPersona`=? WHERE idPersona = ?")
+	actualizarRegistro, err := db.Prepare("UPDATE `Persona` SET `nombrePersona`=?,`apellidoPersona`=?,`tipoDocumento`=?,`NUIPPersona`=?, `usernamePersona`=?,`lugarNacimiento_idCiudad`=?,`lugarExpDocumento_idCiudad`=?,`estadoCivil`=?,`sexoBio`=?,`Etnia_idEtnia`=?,`correoPersonal`=?,`telefonoMovil`=?,`telefonoFijo`=?,`fechaNacimiento`=?,`rolUsuario`=?,`EPS_idEPS`=?,`grupoSangre`=?,`nivelAcademico`=?,`factorRH`=?,`direccionResidencia`=?,`lugarResidencia_idCiudad`=?,`estratoSocioeconomico`=?,`libretaMilitar`=?,`fechaRegistroSistema`=?,`estadoPersona`=? WHERE idPersona = ?")
 	if err != nil {
 		panic(err.Error())
 	}
 	defer actualizarRegistro.Close()
 
-	_, err = actualizarRegistro.Exec(newPersona.NombrePersona, newPersona.ApellidoPersona, newPersona.TipoDocumento, newPersona.NUIPPersona, newPersona.UsernamePersona, newPersona.LugarNacimiento, newPersona.LugarExpDocumento, newPersona.EstadoCivil, newPersona.SexoBio, newPersona.Etnia, newPersona.CorreoPersonal, newPersona.TelefonoMovil, newPersona.TelefonoFijo, newPersona.FechaNacimiento, newPersona.EPS, newPersona.GrupoSangre, newPersona.NivelAcademico, newPersona.FactorRH, newPersona.DirResidencia, newPersona.LugarResidencia, newPersona.EstratoSocioeconomico, newPersona.LibretaMilitar, newPersona.FechaRegistroSistema, newPersona.EstadoPersona, personaID)
+	_, err = actualizarRegistro.Exec(newPersona.NombrePersona, newPersona.ApellidoPersona, newPersona.TipoDocumento, newPersona.NUIPPersona, newPersona.UsernamePersona, newPersona.LugarNacimiento, newPersona.LugarExpDocumento, newPersona.EstadoCivil, newPersona.SexoBio, newPersona.Etnia, newPersona.CorreoPersonal, newPersona.TelefonoMovil, newPersona.TelefonoFijo, newPersona.FechaNacimiento, newPersona.RolUsuario, newPersona.EPS, newPersona.GrupoSangre, newPersona.NivelAcademico, newPersona.FactorRH, newPersona.DirResidencia, newPersona.LugarResidencia, newPersona.EstratoSocioeconomico, newPersona.LibretaMilitar, newPersona.FechaRegistroSistema, newPersona.EstadoPersona, personaID)
 	if err != nil {
 		panic(err.Error())
 	}

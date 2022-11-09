@@ -16,6 +16,7 @@ type Persona struct {
 	TelefonoMovil         int64  `json:"telefonoMovil"`
 	TelefonoFijo          int64  `json:"telefonoFijo"`
 	FechaNacimiento       string `json:"fechaNacimiento"`
+	RolUsuario            string `json:"rolUsuario"`
 	EPS                   int64  `json:"EPS"`
 	GrupoSangre           string `json:"grupoSangre"`
 	NivelAcademico        string `json:"nivelAcademico"`

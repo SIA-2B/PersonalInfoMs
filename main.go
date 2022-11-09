@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"net/http"
-	"strconv"
-
 	"log"
+	"net/http"
 	"personalInfoMs/commons"
 	"personalInfoMs/routes"
+	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -37,6 +37,7 @@ func main() {
 		for f {
 			log.Println("Estableciendo conexión con RabbitMQ... (Intento " + strconv.Itoa(i) + ")")
 			commons.RabbitMQConsumer()
+			time.Sleep(5 * time.Second)
 			i++
 		}
 	}()
