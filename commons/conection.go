@@ -10,7 +10,7 @@ func ConexionDB() (db *sql.DB) {
 	driver := "mysql"
 	user := "root"
 	//contrasenia := "poiuasdoiweq123we1232130asd"
-	contrasenia := "hCQf5uePrYH2ErqKI6YJ"
+	contrasenia := "3QkIgvSiDPtLxMcmFzac"
 	//nombreDB := "personalInfoDb"
 	nombreDB := "railway"
 
