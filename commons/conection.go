@@ -9,17 +9,13 @@ import (
 func ConexionDB() (db *sql.DB) {
 	driver := "mysql"
 	user := "root"
-	//contrasenia := "poiuasdoiweq123we1232130asd"
-	contrasenia := "3QkIgvSiDPtLxMcmFzac"
-	//nombreDB := "personalInfoDb"
-	nombreDB := "railway"
+	contrasenia := "eO07IOI2MbBo"
+	nombreDB := "personalInfoDb"
 
 	//direccionIP := "172.17.0.2" //MySQL in  Docker
-	direccionIP := "containers-us-west-102.railway.app" //MySQL in  railway
-	//direccionIP := "34.95.213.9" //googleSQLCLoud
+	direccionIP := "34.174.47.78" //googleSQLCLoud
 
-	port := "6497" //Railway
-	//port := "3306"		//Google & Docker
+	port := "3306" //Google & Docker
 
 	db, err := sql.Open(driver, user+":"+contrasenia+"@tcp("+direccionIP+":"+port+")/"+nombreDB)
 	if err != nil {
