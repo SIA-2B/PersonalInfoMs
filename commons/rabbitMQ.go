@@ -19,7 +19,7 @@ func RabbitMQConsumer() {
 	// ip := "172.20.0.2"
 	ip := "10.116.4.193"
 
-	conn, err := amqp.Dial("amqp://grupo-2b:4PfTQTXD3V8S@" + ip + ":5672")
+	conn, err := amqp.Dial("amqp://grupo-2b:123456789@" + ip + ":5672")
 
 	if err != nil {
 		log.Println(err)
