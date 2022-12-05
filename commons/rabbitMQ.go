@@ -17,9 +17,9 @@ type personaInput struct {
 
 func RabbitMQConsumer() {
 	// ip := "172.20.0.2"
-	ip := "10.116.4.193"
+	ip := "10.116.1.19"
 
-	conn, err := amqp.Dial("amqp://grupo-2b:123456789@" + ip + ":5672")
+	conn, err := amqp.Dial("amqp://grupo-2b:7Xph4uFS2a87@" + ip + ":5672")
 
 	if err != nil {
 		log.Println(err)
